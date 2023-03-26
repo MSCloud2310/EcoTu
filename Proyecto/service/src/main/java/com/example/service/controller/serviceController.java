@@ -64,57 +64,38 @@ public class serviceController {
 
         service serviceFound = serviceService.getJustOne(id);
         if (serviceFound.getCategory().equals("Food")) {
-            food foodAux = foodService.getAllService(id);
-            serviceFood serviceFood = new serviceFood(serviceFound.getId_supplier(),
-                    serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                    serviceFound.getAvailability(), foodAux.getId_food(), foodAux.getPlace_type(), foodAux.getDiet_type(), foodAux.getFood_type(), foodAux.getId_service());
+            serviceFood serviceFood = createServiceFood(serviceFound, id);
             return new ResponseEntity<>(serviceFood.toString(), HttpStatus.OK);
         } else if (serviceFound.getCategory().equals("Transport")) {
-            transport transportAux = transportService.getAllService(id);
-            serviceTransport serviceTransport = new serviceTransport(transportAux.getId_transport(), transportAux.getVehicule_type(), transportAux.getPath_name(),
-                    transportAux.getTime_arrival(), transportAux.getTime_departure(), transportAux.getId_service(), serviceFound.getId_supplier(),
-                    serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                    serviceFound.getAvailability());
+            serviceTransport serviceTransport = createServiceTransport(serviceFound, id);
             return new ResponseEntity<>(serviceTransport.toString(), HttpStatus.OK);
         } else if (serviceFound.getCategory().equals("Entertainment")) {
-            entre entreAux = entreService.getAllService(id);
-            serviceEnter serviceEnter = new serviceEnter(serviceFound.getId_supplier(),
-                    serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                    serviceFound.getAvailability(), entreAux.getId_enter(), entreAux.getEnter_type(), entreAux.getTime_arrival(), entreAux.getTime_departure(),
-                    entreAux.getRestriction(), entreAux.getId_service());
+            serviceEnter serviceEnter = createServiceEnter(serviceFound, id);
             return new ResponseEntity<>(serviceEnter.toString(), HttpStatus.OK);
         } else if (serviceFound.getCategory().equals("Logdment")) {
-            log logAux = logService.getAllService(id);
-            serviceLogdment serviceLogdment = new serviceLogdment(logAux.getId_logdment(), logAux.getLogdment_type(), logAux.getRoom_type(), logAux.getId_service(), serviceFound.getId_supplier(),
-                    serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                    serviceFound.getAvailability());
+            serviceLogdment serviceLogdment = createServiceLog(serviceFound, id);
             return new ResponseEntity<>(serviceLogdment.toString(), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<String>> getAllCategory(@PathVariable String category) {
+     @GetMapping("/category/{category}")
+    public ResponseEntity<List<String>> getAllCategory(@PathVariable  String category) {
         List<service> serviceCategory = serviceService.getAllCategory(category);
         List<String> returnServices = new ArrayList<>();
 
         if (category.equals("Food")) {
             for (service serviceFound : serviceCategory) {
-                food foodAux = foodService.getAllService(serviceFound.getId_service());
-                serviceFood serviceFood = new serviceFood(serviceFound.getId_supplier(),
-                        serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                        serviceFound.getAvailability(), foodAux.getId_food(), foodAux.getPlace_type(), foodAux.getDiet_type(), foodAux.getFood_type(), foodAux.getId_service());
+
+                serviceFood serviceFood = createServiceFood(serviceFound, serviceFound.getId_service());
                 returnServices.add(serviceFood.toString());
             }
             return new ResponseEntity<>(returnServices, HttpStatus.OK);
         } else if (category.equals("Transport")) {
             for (service serviceFound : serviceCategory) {
-                transport transportAux = transportService.getAllService(serviceFound.getId_service());
-                serviceTransport serviceTransport = new serviceTransport(transportAux.getId_transport(), transportAux.getVehicule_type(), transportAux.getPath_name(),
-                        transportAux.getTime_arrival(), transportAux.getTime_departure(), transportAux.getId_service(), serviceFound.getId_supplier(),
-                        serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                        serviceFound.getAvailability());
+
+                serviceTransport serviceTransport = createServiceTransport(serviceFound, serviceFound.getId_service());
                 returnServices.add(serviceTransport.toString());
             }
             return new ResponseEntity<>(returnServices, HttpStatus.OK);
@@ -122,20 +103,15 @@ public class serviceController {
         } else if (category.equals("Entertainment")) {
 
             for (service serviceFound : serviceCategory) {
-                entre entreAux = entreService.getAllService(serviceFound.getId_service());
-                serviceEnter serviceEnter = new serviceEnter(serviceFound.getId_supplier(),
-                        serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                        serviceFound.getAvailability(), entreAux.getId_enter(), entreAux.getEnter_type(), entreAux.getTime_arrival(), entreAux.getTime_departure(),
-                        entreAux.getRestriction(), entreAux.getId_service());
+
+                serviceEnter serviceEnter = createServiceEnter(serviceFound, serviceFound.getId_service());
                 returnServices.add(serviceEnter.toString());
             }
             return new ResponseEntity<>(returnServices, HttpStatus.OK);
         } else if (category.equals("Logdment")) {
             for (service serviceFound : serviceCategory) {
-                log logAux = logService.getAllService(serviceFound.getId_service());
-                serviceLogdment serviceLogdment = new serviceLogdment(logAux.getId_logdment(), logAux.getLogdment_type(), logAux.getRoom_type(), logAux.getId_service(), serviceFound.getId_supplier(),
-                        serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
-                        serviceFound.getAvailability());
+
+                serviceLogdment serviceLogdment = createServiceLog(serviceFound, serviceFound.getId_service());
                 returnServices.add(serviceLogdment.toString());
             }
             return new ResponseEntity<>(returnServices, HttpStatus.OK);
@@ -145,5 +121,47 @@ public class serviceController {
 
     }
 
+
+    /*@GetMapping("/gallery/{category}")
+    public ResponseEntity<List<String>> getImg(@PathVariable String category) {
+
+
+    }*/
+
+
+    public serviceFood createServiceFood(service serviceFound, Integer id) {
+        food foodAux = foodService.getAllService(id);
+        serviceFood serviceFood = new serviceFood(serviceFound.getId_supplier(),
+                serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
+                serviceFound.getAvailability(), foodAux.getId_food(), foodAux.getPlace_type(), foodAux.getDiet_type(), foodAux.getFood_type(), foodAux.getId_service());
+        return serviceFood;
+    }
+
+    public serviceEnter createServiceEnter(service serviceFound, Integer id) {
+        entre entreAux = entreService.getAllService(id);
+        serviceEnter serviceEnter = new serviceEnter(serviceFound.getId_supplier(),
+                serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
+                serviceFound.getAvailability(), entreAux.getId_enter(), entreAux.getEnter_type(), entreAux.getTime_arrival(), entreAux.getTime_departure(),
+                entreAux.getRestriction(), entreAux.getId_service());
+        return serviceEnter;
+    }
+
+    public serviceLogdment createServiceLog(service serviceFound, Integer id) {
+        log logAux = logService.getAllService(id);
+        serviceLogdment serviceLogdment = new serviceLogdment(logAux.getId_logdment(), logAux.getLogdment_type(), logAux.getRoom_type(), logAux.getId_service(), serviceFound.getId_supplier(),
+                serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
+                serviceFound.getAvailability());
+        return serviceLogdment;
+    }
+
+    public serviceTransport createServiceTransport(service serviceFound, Integer id) {
+        transport transportAux = transportService.getAllService(id);
+        serviceTransport serviceTransport = new serviceTransport(transportAux.getId_transport(), transportAux.getVehicule_type(), transportAux.getPath_name(),
+                transportAux.getTime_arrival(), transportAux.getTime_departure(), transportAux.getId_service(), serviceFound.getId_supplier(),
+                serviceFound.getDuration(), serviceFound.getPrice(), serviceFound.getPhoto_url(), serviceFound.getName(), serviceFound.getCategory(),
+                serviceFound.getAvailability());
+        return serviceTransport;
+
+    }
 
 }
