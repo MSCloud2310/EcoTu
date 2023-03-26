@@ -19,6 +19,14 @@ public class serviceLogdment {
     private String category;
     private Integer availability;
 
+    public String getPhoto_url() {
+        return photo_url;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
+    }
+
     public serviceLogdment(Integer id_logdment, String logdment_type, String room_type, Integer id_service, Integer id_supplier, String duration, Double price, String photo_url, String name, String category, Integer availability) {
         this.id_logdment = id_logdment;
         this.logdment_type = logdment_type;

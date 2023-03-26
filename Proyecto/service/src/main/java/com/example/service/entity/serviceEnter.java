@@ -35,6 +35,14 @@ public class serviceEnter {
         this.id_service = id_service;
     }
 
+    public String getPhoto_url() {
+        return photo_url;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
+    }
+
     @Override
     public String toString() {
         return "serviceEnter{" +

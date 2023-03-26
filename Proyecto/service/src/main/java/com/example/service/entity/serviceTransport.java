@@ -20,6 +20,15 @@ public class serviceTransport {
     private String category;
     private Integer availability;
 
+
+    public String getPhoto_url() {
+        return photo_url;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
+    }
+
     public serviceTransport(Integer id_transport, String vehicule_type, String path_name, String time_arrival, String time_departure, Integer id_service, Integer id_supplier, String duration, Double price, String photo_url, String name, String category, Integer availability) {
         this.id_transport = id_transport;
         this.vehicule_type = vehicule_type;
