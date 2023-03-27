@@ -28,9 +28,6 @@ public class loginResponse {
 	public String toString() {
 		return "loginResponse [message=" + message + ", status=" + status + "]";
 	}
-	
-	
-	
-	
+
 
 }

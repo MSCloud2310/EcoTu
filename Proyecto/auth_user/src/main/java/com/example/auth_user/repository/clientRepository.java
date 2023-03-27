@@ -10,11 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @EnableJpaRepositories
 @Repository
-public interface clientRepository extends JpaRepository<client,Integer> {
+public interface clientRepository extends JpaRepository<client, Integer> {
 
-	 client findByUsername(String username) ;
+	client findByUsername(String username);
 
- Optional<client> findOneByUsernameAndPassword(String username, String encodedPassword);
-		
-	
+	Optional<client> findOneByUsernameAndPassword(String username, String encodedPassword);
+
 }

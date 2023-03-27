@@ -111,4 +111,34 @@ public class supplier {
     public void setSocial_media(String social_media) {
         this.social_media = social_media;
     }
+
+	public supplier(Integer id_supplier, String name, String username, String password, Integer age,
+			String profile_photo, String phone_number, String web_page, String social_media, String descripction) {
+		super();
+		this.id_supplier = id_supplier;
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.age = age;
+		this.profile_photo = profile_photo;
+		this.phone_number = phone_number;
+		this.web_page = web_page;
+		this.social_media = social_media;
+		this.descripction = descripction;
+	}
+
+	public supplier() {
+		
+	}
+
+	@Override
+	public String toString() {
+		return "supplier [id_supplier=" + id_supplier + ", name=" + name + ", username=" + username + ", password="
+				+ password + ", age=" + age + ", profile_photo=" + profile_photo + ", phone_number=" + phone_number
+				+ ", web_page=" + web_page + ", social_media=" + social_media + ", descripction=" + descripction + "]";
+	}
+	
+    
+    
+    
 }
