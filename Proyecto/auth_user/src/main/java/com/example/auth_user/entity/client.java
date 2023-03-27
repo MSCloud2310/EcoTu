@@ -79,8 +79,25 @@ public class client {
     public void setProfile_photo(String profile_photo) {
         this.profile_photo = profile_photo;
     }
+      
 
-    @Override
+    public client(Integer id_client, String name, String username, String password, Integer age, String profile_photo,
+			String descripction) {
+		super();
+		this.id_client = id_client;
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.age = age;
+		this.profile_photo = profile_photo;
+		this.descripction = descripction;
+	}
+    
+	public client() {
+		
+	}
+
+	@Override
     public String toString() {
         return "client{" +
                 "id_client=" + id_client +
