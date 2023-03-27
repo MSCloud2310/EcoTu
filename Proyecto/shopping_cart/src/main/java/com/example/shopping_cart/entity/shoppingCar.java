@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="shopping_cart")
-public class shoppingCart {
+public class shoppingCar {
 
     @Id
     @Column(name = "id_shop")
@@ -20,13 +20,13 @@ public class shoppingCart {
     private  Integer id_client;
 
     @Column (name = "pay")
-    private  Integer pay;
+    private  Double pay;
 
-    public Integer getPay() {
+    public Double getPay() {
         return pay;
     }
 
-    public void setPay(Integer pay) {
+    public void setPay(Double pay) {
         this.pay = pay;
     }
 

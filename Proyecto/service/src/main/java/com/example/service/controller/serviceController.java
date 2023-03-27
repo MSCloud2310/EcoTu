@@ -1,12 +1,11 @@
 package com.example.service.controller;
 
 import com.example.service.entity.*;
-import com.example.service.service.*;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -63,7 +62,6 @@ public class serviceController {
         return new ResponseEntity<>("Se ha eliminado con exito", HttpStatus.OK);
     }
 
-
     @GetMapping("/service/{id}")
     public ResponseEntity<String> getOneDetail(@PathVariable Integer id) {
 
@@ -86,7 +84,7 @@ public class serviceController {
 
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<String>> getAllCategory(@PathVariable  String category) {
+    public ResponseEntity<List<String>> getAllCategory(@PathVariable String category) {
         List<service> serviceCategory = serviceService.getAllCategory(category);
         List<String> returnServices = new ArrayList<>();
 
@@ -129,9 +127,9 @@ public class serviceController {
     }
 
 
-    public   List<String> getImages ( String category)  {
+    public List<String> getImages(String category) {
         List<service> serviceCategory = serviceService.getAllCategory(category);
-        List<String> url= new ArrayList<>();
+        List<String> url = new ArrayList<>();
         int currentPhotoIndex = 0;
 
 
@@ -170,24 +168,133 @@ public class serviceController {
     }
 
 
-    private void openPicture(List<String> url,HttpServletResponse response,int index)throws IOException {
-            String urlService= url.get(index);
-            URL imageUrl = new URL(urlService);
-            response.setContentType("image/jpeg");
-            response.setHeader("Content-Disposition", "inline; filename=" + getImageFilename(urlService));
-            InputStream inputStream = imageUrl.openStream();
-            IOUtils.copy(inputStream, response.getOutputStream());
-            response.flushBuffer();
+    private void openPicture(List<String> url, HttpServletResponse response, int index) throws IOException {
+        String urlService = url.get(index);
+        URL imageUrl = new URL(urlService);
+        response.setContentType("image/jpeg");
+        response.setHeader("Content-Disposition", "inline; filename=" + getImageFilename(urlService));
+        InputStream inputStream = imageUrl.openStream();
+        IOUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
     }
+
     @GetMapping("/collage/{category}/{currentPhotoIndex}")
     public ResponseEntity<?> mostrarSiguienteFoto(@PathVariable String category, HttpServletResponse response, @PathVariable int currentPhotoIndex) throws IOException {
-        if(currentPhotoIndex<getImages(category).size()){
-        openPicture(getImages(category),response,currentPhotoIndex);
-        return new ResponseEntity<>(null, HttpStatus.OK);}
-        return  new ResponseEntity<>("Indice fuera del rango", HttpStatus.BAD_REQUEST);
+        if (currentPhotoIndex < getImages(category).size()) {
+            openPicture(getImages(category), response, currentPhotoIndex);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Indice fuera del rango", HttpStatus.BAD_REQUEST);
 
     }
 
+    @GetMapping("/serviceFood")
+    public ResponseEntity<List<food>> saveServiceFood() {
+        return new ResponseEntity<>(foodService.getAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/serviceFood")
+    public ResponseEntity<String> saveServiceFood(@RequestBody food newService) {
+        foodService.saveFood(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @PutMapping("/serviceFood")
+    public ResponseEntity<String> updateServiceFood(@RequestBody food newService) {
+        foodService.saveFood(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @GetMapping("/serviceTransport")
+    public ResponseEntity<List<transport>> saveServiceTransport() {
+        return new ResponseEntity<>(transportService.getAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/serviceTransport")
+    public ResponseEntity<String> saveServiceTransport(@RequestBody transport newService) {
+        transportService.saveTransport(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @PutMapping("/serviceTransport")
+    public ResponseEntity<String> updateServiceTransport(@RequestBody transport  newService) {
+        transportService.saveTransport(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @GetMapping("/serviceEntertainment")
+    public ResponseEntity<List<entre>> saveServiceEnter() {
+        return new ResponseEntity<>(entreService.getAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/serviceEntertainment")
+    public ResponseEntity<String> saveServiceEnter(@RequestBody entre newService) {
+        entreService.saveService(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @PutMapping("/serviceEntertainment")
+    public ResponseEntity<String> updateServiceEnter(@RequestBody entre newService) {
+        entreService.saveService(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @GetMapping("/serviceLog")
+    public ResponseEntity<List<log>> saveServiceLog() {
+        return new ResponseEntity<>(logService.getAll(), HttpStatus.OK);
+    }
+    @PostMapping("/serviceLog")
+    public ResponseEntity<String> saveServiceLog(@RequestBody log newService) {
+        logService.saveLog(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+    @PutMapping("/serviceLog")
+    public ResponseEntity<String> updateServiceLog(@RequestBody log newService) {
+        logService.saveLog(newService);
+        return new ResponseEntity<>("Se ha guardado con exito", HttpStatus.OK);
+    }
+
+
+
+
+    @GetMapping("/serviceShop")
+    public List<String> getShoppingCartInfo() {
+        List<String> shoppingCartInfos = new ArrayList<>();
+        for (service shop : serviceService.getALlServices()) {
+            shoppingCartInfo shoppingCartInfo = new shoppingCartInfo(shop.getAvailability(), shop.getPrice(), shop.getId_service());
+            shoppingCartInfos.add(shoppingCartInfo.toString());
+        }
+        return shoppingCartInfos;
+    }
+
+    @PostMapping(value = "/serviceSold", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String shoppingCarInfo(@RequestBody List<String> info) {
+        List<shoppingCartInfo> service =new ArrayList<>();
+        for (String auxS : info) {
+            String[] partes = auxS.split(",\\s*"); // Separar las partes del token
+            String availability = partes[0].substring(partes[0].indexOf("=") + 1); // Obtener el valor de "availability"
+            String price = partes[1].substring(partes[1].indexOf("=") + 1); // Obtener el valor de "price"
+            String id_service = partes[2].substring(partes[2].indexOf("=") + 1); // Obtener el valor de "id_service"
+            Integer auxAva = Integer.parseInt(availability);
+            Integer auxId = Integer.parseInt(id_service);
+            Double auxPrice = Double.parseDouble(price);
+            service.add(new shoppingCartInfo(auxAva,auxPrice,auxId));
+        }
+        updateStock(serviceService.getALlServices(),service);
+        return "ok";
+    }
+
+    private void updateStock(List<service> services, List<shoppingCartInfo> info){
+        for(service aux: services){
+            for(shoppingCartInfo shop:info){
+                if(shop.getId_service()==aux.getId_service()){
+                    aux.setAvailability(aux.getAvailability()-shop.getAvailability());
+                    serviceService.updateService(aux);
+                }
+            }
+        }
+    }
 
     private String getImageFilename(String url) {
         String[] parts = url.split("/");

@@ -14,6 +14,10 @@ public class transportService {
     @Autowired
     com.example.service.repository.transportRepo transportRepo;
 
+    public List<transport> getAll(){
+        return transportRepo.findAll();
+    }
+
     public transport getAllService(Integer id_service) {
         List<transport> found = transportRepo.findAll();
         for (transport trans : found) {

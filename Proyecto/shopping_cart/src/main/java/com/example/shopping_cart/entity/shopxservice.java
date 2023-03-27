@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shoppxservices")
+@Table(name = "shoppxservice")
 public class shopxservice {
 
     @Id
@@ -18,6 +18,17 @@ public class shopxservice {
 
     @Column (name="id_producto")
     private  Integer id_producto;
+
+    @Column(name = "quantiy")
+    private Integer quantiy;
+
+    public Integer getQuantiy() {
+        return quantiy;
+    }
+
+    public void setQuantiy(Integer quantiy) {
+        this.quantiy = quantiy;
+    }
 
     public Integer getId() {
         return id;

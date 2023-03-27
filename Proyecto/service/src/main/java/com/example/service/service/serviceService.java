@@ -13,6 +13,7 @@ public class serviceService {
     @Autowired
     private com.example.service.repository.serviceRepo serviceRepo;
 
+
     public List<service> getALlServices() {
         return serviceRepo.findAll();
     }

@@ -11,6 +11,10 @@ public class entreService {
     @Autowired
     com.example.service.repository.entreRepo entreRepo;
 
+    public List<entre>getAll(){
+        return entreRepo.findAll();
+    }
+
     public entre getAllService(Integer id_service) {
         List<entre> found = entreRepo.findAll();
         for (entre trans : found) {

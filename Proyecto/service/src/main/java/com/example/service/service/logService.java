@@ -11,6 +11,11 @@ public class logService {
     @Autowired
     com.example.service.repository.logRepo logRepo;
 
+    public List<log> getAll(){
+        return logRepo.findAll();
+    }
+
+
     public log getAllService(Integer id_service) {
         List<log> found = logRepo.findAll();
         for (log trans : found) {

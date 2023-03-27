@@ -12,6 +12,10 @@ public class foodService {
     @Autowired
     com.example.service.repository.foodRepo foodRepo;
 
+    public List<food> getAll(){
+        return  foodRepo.findAll();
+    }
+
     public food getAllService(Integer id_service) {
         List<food> found = foodRepo.findAll();
         for (food trans : found) {
