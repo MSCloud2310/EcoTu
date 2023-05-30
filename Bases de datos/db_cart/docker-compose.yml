@@ -1,0 +1,16 @@
+version: '3' 
+services: 
+  db: 
+    image: mariadb 
+    container_name: car
+    healthcheck:
+      test: "/usr/bin/mariadb --user=root --password=123 --execute \"SHOW DATABASES;\""
+      interval: 3s
+      timeout: 1s
+      retries: 10
+    env_file:
+      - mariadb.env
+    ports: 
+      - 3309:3306
+    volumes: 
+    - ./car.sql:/docker-entrypoint-initdb.d/car.sql
